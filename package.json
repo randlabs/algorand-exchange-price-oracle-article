@@ -1,0 +1,7 @@
+{
+	"name": "algorand-exchange-price-oracle-article",
+	"version": "1.0.0",
+	"dependencies": {
+		"algosdk": "^1.6.2"
+	}
+}
