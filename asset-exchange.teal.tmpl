@@ -1,0 +1,64 @@
+// Asset Exchange Teal
+// Allows exchanging algos for assets based on a price submitted in another transaction part of the group
+// TMPL_EXCHANGE:		public key of the Exchange
+// TMPL_ORACLE: 		public key of the Oracle
+// TMPL_ASA_ID: 		asset id to exchange
+// TMPL_PRICE_DECIMALS: number to divide the price to get the real price which is 10^DECIMALS (e.g.: for 4 decimals use 10000)
+
+global GroupSize
+int 4
+==
+
+txn TypeEnum
+int 4
+==
+&&
+
+gtxn 3 TypeEnum
+int 1
+==
+&&
+
+txn Fee
+global MinTxnFee
+==
+&&
+
+gtxn 3 Receiver
+addr TMPL_EXCHANGE
+==
+&&
+
+gtxn 2 Sender 
+addr TMPL_EXCHANGE
+==
+&&
+
+// verify that the price was submitted by the Oracle
+gtxn 1 Sender 
+addr TMPL_ORACLE
+==
+&&
+
+// Note: price
+gtxn 1 Note
+len
+int 8
+==
+&&
+
+txn XferAsset
+int TMPL_ASA_ID
+==
+&&
+
+gtxn 3 Amount 
+int TMPL_PRICE_DECIMALS
+*
+gtxn 1 Note
+btoi
+/
+txn AssetAmount 
+>=
+&&
+
