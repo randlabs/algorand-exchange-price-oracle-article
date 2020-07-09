@@ -3,15 +3,16 @@ const fs = require('fs');
 const templates = require('algosdk/src/logicTemplates/templates');
 
 
-function recoverSubmitterAccount() {
-	// FPW4ZTTXZQ4KEATXWZC2LOQZ4UHCGRJD76A6W23ZMQUGAOGPVKRYLHXKPE
-	const passphrase = "chef jaguar symptom dilemma letter puppy dismiss evolve ship marine female repair differ dash popular fortune sock slogan ramp course excite grit work abandon relief";
+function recoverUserAccount() {
+	// FEEYFVY7T4M742U3PUJ2JOMCGOABZOENTEDFFWTK6XIG3WJHWMY3Y543LA
+	const passphrase = "prison decade action cancel accuse dinosaur shell flip onion guess pause edit dutch improve shoulder loud violin either leisure globe vehicle train aerobic able until";
 	let myAccount = algosdk.mnemonicToSecretKey(passphrase);
 	return myAccount;
 }
-function recoverConsumerAccount() {
-	// FEEYFVY7T4M742U3PUJ2JOMCGOABZOENTEDFFWTK6XIG3WJHWMY3Y543LA
-	const passphrase = "prison decade action cancel accuse dinosaur shell flip onion guess pause edit dutch improve shoulder loud violin either leisure globe vehicle train aerobic able until";
+
+function recoverSubmitterAccount() {
+	// FPW4ZTTXZQ4KEATXWZC2LOQZ4UHCGRJD76A6W23ZMQUGAOGPVKRYLHXKPE
+	const passphrase = "chef jaguar symptom dilemma letter puppy dismiss evolve ship marine female repair differ dash popular fortune sock slogan ramp course excite grit work abandon relief";
 	let myAccount = algosdk.mnemonicToSecretKey(passphrase);
 	return myAccount;
 }
@@ -36,7 +37,7 @@ var algodClient;
 let price = 1154;
 let priceExpiration = 20;
 let priceDecimals = 10000;
-let assetAmount = 15954000;
+let assetAmount = 5954000;
 
 // Betanet
 // let assetId = 2654334;
@@ -46,30 +47,10 @@ let assetId = 10295717;
 let oracleAccount = recoverOracleAccount();
 let submitterAccount = recoverSubmitterAccount();
 
-// let intBuf = [];
-// decodedLength = logicTemplates.putUvarint(intBuf, 1117);
-
-// let oracleProgram = new Uint8Array(Buffer.from("ASADAZChDwgmASAr7czOd8w4ogJ3tkWluhnlDiNFI/+B62t5ZChgOM+qozEQIhIxATIAEhAzABAiEhAzAAgjDxAzAAcoEhAxBRUkEhAxBRctFxIQMQQuFw4Q", "base64"));
-// let oracleProgram = new Uint8Array(Buffer.from("ASAFAZChDwgmASAr7czOd8w4ogJ3tkWluhnlDiNFI/+B62t5ZChgOM+qozEQIhIxATIAEhAzABAiEhAzAAgjDxAzAAcoEhAxBRUkEhAxBRclEhAxBCEEDhA=", "base64"));
-
 // Betanet
-// let exchangeProgram = new Uint8Array(Buffer.from("ASAFBAEI/oCiAZBOJgIgIWSfzHpvCITfJv5kVG4SJhPzNVHC05IMirGf3YXYVoIgK+3MznfMOKICd7ZFpboZ5Q4jRSP/getreWQoYDjPqqMyBCISMRAiEhAzAxAjEhAxATIAEhAzAwcoEhAzAgAoEhAzAQApEhAzAQUVJBIQMRElEhAzAwghBAszAQUXCjESDxA=", "base64"));
-
+//let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCP6AogGQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIMg1n9laxm7N/Tz/RNcwHO6BNM35hHfZ3CM/1DNOuaGYMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
 // Testnet
-let exchangeProgram = new Uint8Array(Buffer.from("ASAFBAEIpbP0BJBOJgIgIWSfzHpvCITfJv5kVG4SJhPzNVHC05IMirGf3YXYVoIgyDWf2VrGbs39PP9E1zAc7oE0zfmEd9ncIz/UM065oZgyBCISMRAiEhAzAxAjEhAxATIAEhAzAwcoEhAzAgAoEhAzAQApEhAzAQUVJBIQMRElEhAzAwghBAszAQUXCjESDxA=", "base64"));
-
-// function putUvarint(buf, x){
-//     let i = 0;
-//     while (x > 0x80) {
-//         buf.push((x&0xFF) | 0x80);
-//         x >>= 7;
-//         i += 1;
-//     }
-//     buf.push(x&0xFF);
-//     return i + 1
-// }
-
-
+let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCKWz9ASQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIMg1n9laxm7N/Tz/RNcwHO6BNM35hHfZ3CM/1DNOuaGYMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
 
 async function setupClient() {
 	if (client == null) {
@@ -119,20 +100,14 @@ async function priceSubmitter () {
 
 		if (suggestedParams.lastRound !== lastPriceRound) {
 
-			// let referenceProgramBytesTeal = Buffer.from("ASAFAZChDwiCCcCopQQmASAr7czOd8w4ogJ3tkWluhnlDiNFI/+B62t5ZChgOM+qozEQIhIxATIAEhAzABAiEhAzAAgjDxAzAAcoEhAxBRUkEhAxBRclEhAxBCEEDhA=", 'base64');
+			let oracleProgramReferenceProgramBytesReplace = Buffer.from("ASAEAZChDwUGJgEgK+3MznfMOKICd7ZFpboZ5Q4jRSP/getreWQoYDjPqqMxECISMQEyABIQMQgjDxAxBygSEDEJMgMSEDEFFyQSEDEEJQ4Q", 'base64');
 
-			let referenceProgramBytesReplace = Buffer.from("ASAFAZChDwgFBiYBICvtzM53zDiiAne2RaW6GeUOI0Uj/4Hra3lkKGA4z6qjMRAiEjEBMgASEDEQIhIQMQgjDxAxBygSEDMACTIDEhAxBRUkEhAxBRclEhAxBCEEDhA=", 'base64');
-			// let oracleProgram = new Uint8Array(referenceProgramBytesTeal);
-			// console.log(referenceProgramBytesTeal.toString('hex'));
-
-			let referenceOffsets = [ /*fee*/ 8, /*LastValid*/ 9];
+			let referenceOffsets = [ /*Price*/ 7, /*LastValid*/ 8];
 			let injectionVector =  [price, params.lastRound + priceExpiration];
 			let injectionTypes = [templates.valTypes.INT, templates.valTypes.INT];
 
-			var buff = templates.inject(referenceProgramBytesReplace, referenceOffsets, injectionVector, injectionTypes);
-			// console.log(buff.toString('hex'));
+			var buff = templates.inject(oracleProgramReferenceProgramBytesReplace, referenceOffsets, injectionVector, injectionTypes);
 			let oracleProgram = new Uint8Array(buff);			
-			// let oracleProgram2 = new Uint8Array(buff);			
 			let lsigOracle = algosdk.makeLogicSig(oracleProgram);
 			lsigOracle.sign(oracleAccount.sk);
 	
@@ -154,7 +129,7 @@ async function priceSubmitter () {
 	} catch (err) {
 		console.log("err", err);
 	}
-	setTimeout(priceSubmitter, 6000);
+	setTimeout(priceSubmitter, 4300);
 }
 
 async function submitOracleTransactions() {
@@ -162,7 +137,7 @@ async function submitOracleTransactions() {
 	try {
 		await setupClient();
 
-		let consumerAccount = recoverConsumerAccount();
+		let userAccount = recoverUserAccount();
 		let exchangeAccount = recoverExchangeAccount();
 
 		let oracleFee = 250000;
@@ -204,27 +179,27 @@ async function submitOracleTransactions() {
         lsigOracle.msig = decodedLsig.msig;
 
 		// Feed tx
-		// let oracleFeedTx = algosdk.makePaymentTxnWithSuggestedParams(consumerAccount.addr,
+		// let oracleFeedTx = algosdk.makePaymentTxnWithSuggestedParams(userAccount.addr,
 		// 	oracleAccount.addr, 200000, undefined,
 		// 	new Uint8Array(0), suggestedParams);
-		// let oracleFeedTxSigned = oracleFeedTx.signTxn(consumerAccount.sk);
+		// let oracleFeedTxSigned = oracleFeedTx.signTxn(userAccount.sk);
 		// let feedTx = (await algodClient.sendRawTransaction(oracleFeedTxSigned));
 
 		// created Betanet: 2654204
 		// created Testanet: 10295717
-		// let createAssetTx = algosdk.makeAssetCreateTxnWithSuggestedParams(consumerAccount.addr, new Uint8Array(Buffer.from("Lecop Asset", "utf8")), 1000000000000, 6,
-		//  	false, consumerAccount.addr, consumerAccount.addr, consumerAccount.addr, consumerAccount.addr, "LEC", "Lecop", "https://randlabs.io", undefined,
+		// let createAssetTx = algosdk.makeAssetCreateTxnWithSuggestedParams(userAccount.addr, new Uint8Array(Buffer.from("Lecop Asset", "utf8")), 1000000000000, 6,
+		//  	false, userAccount.addr, userAccount.addr, userAccount.addr, userAccount.addr, "LEC", "Lecop", "https://randlabs.io", undefined,
 		//  	suggestedParams);
-		// let createAssetTxSigned = createAssetTx.signTxn(consumerAccount.sk);
+		// let createAssetTxSigned = createAssetTx.signTxn(userAccount.sk);
 		// let createAssetTxMined = (await algodClient.sendRawTransaction(createAssetTxSigned));
 
-		// let assetDestroy = algosdk.makeAssetDestroyTxnWithSuggestedParams(consumerAccount.addr, new Uint8Array(0), 2654202, suggestedParams);
-		// let assetDestroySigned = assetDestroy.signTxn(consumerAccount.sk);
+		// let assetDestroy = algosdk.makeAssetDestroyTxnWithSuggestedParams(userAccount.addr, new Uint8Array(0), 2654202, suggestedParams);
+		// let assetDestroySigned = assetDestroy.signTxn(userAccount.sk);
 		// let assetDestroyMined = (await algodClient.sendRawTransaction(assetDestroySigned));
 		
 		// Transaction 0
 		// pay Oracle fee 
-		let oracleFeeTx = algosdk.makePaymentTxnWithSuggestedParams(consumerAccount.addr,
+		let oracleFeeTx = algosdk.makePaymentTxnWithSuggestedParams(userAccount.addr,
 			oracleAccount.addr, oracleFee + 1000, undefined,
 			new Uint8Array(0), suggestedParams);
 
@@ -238,12 +213,12 @@ async function submitOracleTransactions() {
 		// Transaction 2
 		// send assets from Exchange to User 
 		let exchangeTx = algosdk.makeAssetTransferTxnWithSuggestedParams(exchangeAccount.addr,
-			consumerAccount.addr, undefined, undefined, 
+			userAccount.addr, undefined, undefined, 
 			assetAmount, new Uint8Array(Buffer.from("Price: " + priceMessagePackDecoded.price, "utf8")), assetId, suggestedParams);
 		
 		// Transaction 3 
 		// send algos needed to buy assetAmount assets based on price
-		let algosTx = algosdk.makePaymentTxnWithSuggestedParams(consumerAccount.addr, 
+		let algosTx = algosdk.makePaymentTxnWithSuggestedParams(userAccount.addr, 
 			exchangeAccount.addr, Math.ceil(assetAmount*priceMessagePackDecoded.price/priceDecimals), undefined, 
 			new Uint8Array(Buffer.from("Price: " + priceMessagePackDecoded.price, "utf8")), suggestedParams);
 		
@@ -255,10 +230,10 @@ async function submitOracleTransactions() {
 
 		// Sign each transaction in the group with correct key or LogicSig
 		let signed = []
-		let oracleFeeTxSigned = oracleFeeTx.signTxn(consumerAccount.sk);
+		let oracleFeeTxSigned = oracleFeeTx.signTxn(userAccount.sk);
 		let oracleTxSigned = algosdk.signLogicSigTransactionObject(oracleTx, lsigOracle);
 		let exchangeTxSigned = algosdk.signLogicSigTransactionObject(exchangeTx, lsigExchange);
-		let algosTxSigned = algosTx.signTxn(consumerAccount.sk);
+		let algosTxSigned = algosTx.signTxn(userAccount.sk);
 
 		signed.push(oracleFeeTxSigned);
 		signed.push(oracleTxSigned.blob);

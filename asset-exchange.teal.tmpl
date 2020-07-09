@@ -9,6 +9,11 @@ global GroupSize
 int 4
 ==
 
+txn GroupIndex
+int 2
+==
+&&
+
 txn TypeEnum
 int 4
 ==
@@ -29,8 +34,8 @@ addr TMPL_EXCHANGE
 ==
 &&
 
-gtxn 2 Sender 
-addr TMPL_EXCHANGE
+txn CloseRemainderTo
+global ZeroAddress
 ==
 &&
 
