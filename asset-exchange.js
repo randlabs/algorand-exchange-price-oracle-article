@@ -2,6 +2,8 @@ const algosdk = require('algosdk');
 const fs = require('fs');
 const templates = require('algosdk/src/logicTemplates/templates');
 
+let submitterAccountPublic = "PRICEP3G2F5L6ZG5WTJIAKEQW4OJJ3FM4XVFQDZI7M2VBTFVUHTTR2AU2U";
+let oracleAccountPublic = "PRICEP3G2F5L6ZG5WTJIAKEQW4OJJ3FM4XVFQDZI7M2VBTFVUHTTR2AU2U";
 
 function recoverUserAccount() {
 	// FEEYFVY7T4M742U3PUJ2JOMCGOABZOENTEDFFWTK6XIG3WJHWMY3Y543LA
@@ -50,7 +52,8 @@ let submitterAccount = recoverSubmitterAccount();
 // Betanet
 //let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCP6AogGQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIMg1n9laxm7N/Tz/RNcwHO6BNM35hHfZ3CM/1DNOuaGYMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
 // Testnet
-let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCKWz9ASQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIMg1n9laxm7N/Tz/RNcwHO6BNM35hHfZ3CM/1DNOuaGYMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
+// let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCKWz9ASQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIMg1n9laxm7N/Tz/RNcwHO6BNM35hHfZ3CM/1DNOuaGYMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
+let exchangeProgram = new Uint8Array(Buffer.from("ASAGBAIBCKWz9ASQTiYCICFkn8x6bwiE3yb+ZFRuEiYT8zVRwtOSDIqxn92F2FaCIHxQIj9m0Xq/ZN200oAokLcclOys5epYDyj7NVDMtaHnMgQiEjEWIxIQMRAiEhAzAxAkEhAxATIAEhAzAwcoEhAxCTIDEhAzAQApEhAzAQUVJRIQMREhBBIQMwMIIQULMwEFFwoxEg8Q", "base64"));
 
 async function setupClient() {
 	if (client == null) {
@@ -129,7 +132,7 @@ async function priceSubmitter () {
 	} catch (err) {
 		console.log("err", err);
 	}
-	setTimeout(priceSubmitter, 4300);
+	setTimeout(priceSubmitter);
 }
 
 async function submitOracleTransactions() {
@@ -162,13 +165,14 @@ async function submitOracleTransactions() {
 		// get the last price submitted
 		// filter the txs that are not from the submitter because it can be in the to field as part of the Oracle fee payment
 		do {
-			let apiRes = await algodClient.transactionByAddress(submitterAccount.addr, undefined, undefined, 1);
+			let apiRes = await algodClient.transactionByAddress(submitterAccountPublic, undefined, undefined, 1);
+			// let apiRes = await algodClient.transactionByAddress(submitterAccount.addr, undefined, undefined, 1);
 			if (apiRes.transactions.length !== 1) {
 				console.log ("Error: Cannot find Oracle transactions.")
 				return;
 			}
 			oracleRetrieveTx = apiRes.transactions[0];
-		} while (oracleRetrieveTx.from !== submitterAccount.addr);
+		} while (oracleRetrieveTx.from !== submitterAccountPublic);
 
 		console.log("Transaction: " + oracleRetrieveTx.tx)
 		let priceMessagePackDecoded = algosdk.decodeObj(oracleRetrieveTx.note);
@@ -200,14 +204,14 @@ async function submitOracleTransactions() {
 		// Transaction 0
 		// pay Oracle fee 
 		let oracleFeeTx = algosdk.makePaymentTxnWithSuggestedParams(userAccount.addr,
-			oracleAccount.addr, oracleFee + 1000, undefined,
+			oracleAccountPublic, oracleFee + 1000, undefined,
 			new Uint8Array(0), suggestedParams);
 
 		let note = getInt64Bytes(priceMessagePackDecoded.price);
 		// Transaction 1
 		// insert price from the oracle account and send the fee to the submitter
-		let oracleTx = algosdk.makePaymentTxnWithSuggestedParams(oracleAccount.addr, 
-		    submitterAccount.addr, oracleFee, undefined, 
+		let oracleTx = algosdk.makePaymentTxnWithSuggestedParams(oracleAccountPublic, 
+		    submitterAccountPublic, oracleFee, undefined, 
 		    note, suggestedParams);
 
 		// Transaction 2
@@ -246,8 +250,30 @@ async function submitOracleTransactions() {
 	} catch (err) {
 		console.log("err", err);
 	}
+	setTimeout(submitOracleTransactions, 10000);
 }
 
-setInterval(submitOracleTransactions, 15000);
-setTimeout(priceSubmitter);
+// setInterval(submitOracleTransactions, 15000);
+setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
+// setTimeout(submitOracleTransactions, 10000);
 
+//setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
+// setTimeout(priceSubmitter);
